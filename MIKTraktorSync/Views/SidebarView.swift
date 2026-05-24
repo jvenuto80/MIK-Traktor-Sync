@@ -51,6 +51,7 @@ struct SidebarView: View {
                     } else {
                         appState.syncEngine.excludedPlaylists.insert(playlist.name)
                     }
+                    appState.syncEngine.calculateDiffs()
                     appState.objectWillChange.send()
                 } label: {
                     Image(systemName: isExcluded ? "minus.circle.fill" : "plus.circle.fill")

@@ -30,7 +30,7 @@ final class SyncEngine: ObservableObject {
     func calculateDiffs() {
         var newDiffs: [SyncDiff] = []
 
-        let mikPlaylists = mikDatabase.playlists
+        let mikPlaylists = mikDatabase.playlists.filter { !excludedPlaylists.contains($0.name) }
         let traktorPlaylists = traktorCollection.playlists
         let traktorNames = Set(traktorPlaylists.map { $0.name })
 

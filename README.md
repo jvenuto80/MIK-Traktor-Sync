@@ -1,5 +1,9 @@
 # SyncDeck — MIK → Traktor Playlist Sync
 
+<p align="center">
+  <img src="syncdeck_icon_1024.png" width="200" alt="SyncDeck Icon">
+</p>
+
 A native macOS app that syncs playlists from **Mixed In Key** to **Traktor Pro 4**.
 
 One-directional sync ensures the MIK database is never modified — only Traktor's `collection.nml` is written to.

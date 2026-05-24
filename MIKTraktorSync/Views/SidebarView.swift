@@ -42,12 +42,30 @@ struct SidebarView: View {
     }
 
     private func playlistRow(_ playlist: Playlist) -> some View {
-        HStack {
-            VStack(alignment: .leading, spacing: 2) {
-                Text(playlist.name)
-                    .font(.body)
-                    .lineLimit(1)
+        let isExcluded = playlist.source == .mixedInKey && appState.syncEngine.excludedPlaylists.contains(playlist.name)
+        return HStack {
+            if playlist.source == .mixedInKey {
+                Button {
+                    if isExcluded {
+                        appState.syncEngine.excludedPlaylists.remove(playlist.name)
+                    } else {
+                        appState.syncEngine.excludedPlaylists.insert(playlist.name)
+                    }
+                    appState.objectWillChange.send()
+                } label: {
+                    Image(systemName: isExcluded ? "minus.circle.fill" : "plus.circle.fill")
+                        .foregroundColor(isExcluded ? .red : .green)
+                        .font(.body)
+                }
+                .buttonStyle(.plain)
+                .help(isExcluded ? "Click to include in sync" : "Click to exclude from sync")
             }
+
+            Text(playlist.name)
+                .font(.body)
+                .lineLimit(1)
+                .opacity(isExcluded ? 0.5 : 1.0)
+
             Spacer()
             Text("\(playlist.trackCount)")
                 .font(.caption)

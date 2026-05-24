@@ -8,6 +8,7 @@ final class SyncEngine: ObservableObject {
     @Published var autoSyncEnabled = false
     @Published var lastSyncDate: Date?
     @Published var activityLog: [ActivityLogEntry] = []
+    @Published var excludedPlaylists: Set<String> = []  // Playlist names excluded from sync
 
     private let mikDatabase: MIKDatabase
     private let traktorCollection: TraktorCollection
@@ -93,7 +94,8 @@ final class SyncEngine: ObservableObject {
         if let names = playlistNames {
             playlistsToSync = mikDatabase.playlists.filter { names.contains($0.name) }
         } else {
-            playlistsToSync = mikDatabase.playlists
+            // Respect excluded playlists when syncing all
+            playlistsToSync = mikDatabase.playlists.filter { !excludedPlaylists.contains($0.name) }
         }
 
         for playlist in playlistsToSync {
